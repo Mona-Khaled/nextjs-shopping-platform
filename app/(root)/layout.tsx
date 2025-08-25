@@ -1,11 +1,8 @@
 // Root Group Layout
 
-import type { Metadata } from "next";
 import Header from "@/components/shared/header";
 import Footer from "@/components/footer";
-export const metadata: Metadata = {
-  title: "Home",
-};
+
 export default function RootLayout({
   children,
 }: Readonly<{

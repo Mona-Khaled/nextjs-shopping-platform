@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, UserIcon, EllipsisVertical } from "lucide-react";
+import { ShoppingCart, EllipsisVertical } from "lucide-react";
 import ModeToggle from "./mode-toggle";
 import Link from "next/link";
 import {
@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import UserButton from "./user-button";
 
 const Menu = () => {
   return (
@@ -22,11 +23,7 @@ const Menu = () => {
             <ShoppingCart /> Cart
           </Link>
         </Button>
-        <Button asChild>
-          <Link href="/sign-in">
-            <UserIcon /> Sign In
-          </Link>
-        </Button>
+        <UserButton />
       </nav>
       {/* keep this nav hidden on medium screens and up, cause it is only for small screens .. so medium screens is the breakpoint here*/}
       <nav className="md:hidden">
@@ -46,11 +43,7 @@ const Menu = () => {
                 <ShoppingCart /> Cart
               </Link>
             </Button>
-            <Button asChild>
-              <Link href="/sign-in">
-                <UserIcon /> Sign In
-              </Link>
-            </Button>
+            <UserButton />
           </SheetContent>
         </Sheet>
       </nav>

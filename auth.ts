@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./db/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compareSync } from "bcrypt-ts-edge";
+import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const config = {
   pages: {
@@ -26,16 +28,13 @@ export const config = {
         },
       },
       async authorize(credentials) {
-        console.log("🚀 ~ authorize ~ credentials:", credentials);
         if (credentials == null) return null;
-
         // find user in db
         const user = await prisma.user.findFirst({
           where: {
             email: credentials.email as string,
           },
         });
-        console.log("🚀 ~ authorize ~ user:", user);
         // if password correct, return user
         if (user && user.password) {
           const isMatch = compareSync(
@@ -58,12 +57,49 @@ export const config = {
     }),
   ],
   callbacks: {
+    async jwt({ user, token, account, session, trigger }: any) {
+      if (user) {
+        token.role = user.role;
+        // use first part of email if user has no name
+        if (user.name === "NO_NAME") {
+          token.name = user.email.split("@")[0];
+        }
+      }
+      return token;
+    },
+
     async session({ session, user, trigger, token }: any) {
       session.user.id = token.sub;
       if (trigger === "update") {
         session.user.name = user.name;
       }
       return session;
+    },
+
+    authorized({ auth, request }: any) {
+      // Check for cart cookie
+      if (!request.cookies.get("sessionCartId")) {
+        // Generate cart cookie
+        const sessionCartId = crypto.randomUUID();
+
+        // Clone the request headers
+        const newRequestHeaders = new Headers(request.headers);
+
+        // Create a new response and add the new headers
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders,
+          },
+        });
+
+        // Set the newly generated sessionCartId in the response cookies
+        response.cookies.set("sessionCartId", sessionCartId);
+
+        // Return the response with the sessionCartId set
+        return response;
+      } else {
+        return true;
+      }
     },
   },
 } satisfies NextAuthConfig;
