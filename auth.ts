@@ -59,10 +59,37 @@ export const config = {
   callbacks: {
     async jwt({ user, token, account, session, trigger }: any) {
       if (user) {
+        token.id = user.id;
         token.role = user.role;
         // use first part of email if user has no name
         if (user.name === "NO_NAME") {
           token.name = user.email.split("@")[0];
+        }
+
+        if (["signIn", "signUp"].includes(trigger)) {
+          const sessionCartId = (await cookies()).get("sessionCartId")?.value;
+          if (sessionCartId) {
+            const sessionCart = await prisma.cart.findFirst({
+              where: { sessionCartId },
+            });
+            if (sessionCart) {
+              // overwrite any existing user cart
+              await prisma.cart.deleteMany({
+                where: {
+                  userId: user.id,
+                },
+              });
+              // assign the guest cart to the logged-in user
+              await prisma.cart.update({
+                where: {
+                  id: sessionCart.id,
+                },
+                data: {
+                  userId: user.id,
+                },
+              });
+            }
+          }
         }
       }
       return token;
@@ -77,6 +104,21 @@ export const config = {
     },
 
     authorized({ auth, request }: any) {
+      // array of regex patterns of paths we want to protect
+      const protectedPaths = [
+        /\/shipping-address/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+
+      const { pathname } = request.nextUrl;
+      // returns false so will block guests from accessing protected routes and redirect them to signin page instead which is defined in the pages obj above in the config
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+
       // Check for cart cookie
       if (!request.cookies.get("sessionCartId")) {
         // Generate cart cookie

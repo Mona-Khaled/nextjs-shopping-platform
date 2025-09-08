@@ -53,3 +53,74 @@ export const round2 = (value: number | string) => {
     throw new Error("value is not a number nor a string");
   }
 };
+
+/**
+ Intl.NumberFormat is a built-in JavaScript object that provides language-sensitive 
+ number formatting and makes it easy to format numbers as currency, percentages, 
+ or general numbers based on locale. We are using the en-US locale and formatting 
+ the currency as USD. We are also setting the minimum number of fractional digits to 2.
+ */
+const CURRENCY_FORMATTER = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  minimumFractionDigits: 2,
+});
+
+// Format currency
+export function formatCurrency(amount: number | string | null) {
+  if (typeof amount === "number") {
+    return CURRENCY_FORMATTER.format(amount);
+  } else if (typeof amount === "string") {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return "NaN"; // not a number
+  }
+}
+
+// Shorten ID to 6 characters
+export function formatId(id: string) {
+  return `..${id.substring(id.length - 6)}`;
+}
+
+// Format the date in 3 different ways (Date & Time, Date Only, Time Only)
+export const formatDateTime = (dateString: Date) => {
+  const dateTimeOptions: Intl.DateTimeFormatOptions = {
+    month: "short", // abbreviated month name (e.g., 'Oct')
+    year: "numeric", // abbreviated month name (e.g., 'Oct')
+    day: "numeric", // numeric day of the month (e.g., '25')
+    hour: "numeric", // numeric hour (e.g., '8')
+    minute: "numeric", // numeric minute (e.g., '30')
+    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+  };
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
+    month: "short", // abbreviated month name (e.g., 'Oct')
+    year: "numeric", // numeric year (e.g., '2023')
+    day: "numeric", // numeric day of the month (e.g., '25')
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric", // numeric hour (e.g., '8')
+    minute: "numeric", // numeric minute (e.g., '30')
+    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+  };
+  const formattedDateTime: string = new Date(dateString).toLocaleString(
+    "en-US",
+    dateTimeOptions
+  );
+  const formattedDate: string = new Date(dateString).toLocaleString(
+    "en-US",
+    dateOptions
+  );
+  const formattedTime: string = new Date(dateString).toLocaleString(
+    "en-US",
+    timeOptions
+  );
+  return {
+    // Expected output: "Oct 25, 2023, 1:30 AM" (adjusted for timezone)
+    dateTime: formattedDateTime,
+    // Expected output: "Wed, Oct 25, 2023"
+    dateOnly: formattedDate,
+    // Expected output: "1:30 AM" (adjusted for timezone)
+    timeOnly: formattedTime,
+  };
+};

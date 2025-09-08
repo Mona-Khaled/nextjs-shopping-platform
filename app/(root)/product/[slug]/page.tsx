@@ -1,10 +1,16 @@
+import AddToCart from "@/components/shared/product/add-to-cart";
 import ProductImages from "@/components/shared/product/product-images";
 import ProductPrice from "@/components/shared/product/product-price";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
+import { getMyCart } from "@/lib/actions/cart.actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Product",
+};
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -16,6 +22,8 @@ const ProductDetailsPage = async (props: {
   if (!product) {
     notFound(); // send user to not-found page
   }
+
+  const cart = await getMyCart();
 
   return (
     <section>
@@ -75,7 +83,17 @@ const ProductDetailsPage = async (props: {
 
               {product.stock > 0 && (
                 <div className="flex-center mt-4">
-                  <Button className="w-full">Add to Cart</Button>
+                  <AddToCart
+                    cart={cart}
+                    item={{
+                      productId: product.id,
+                      name: product.name,
+                      slug: product.slug,
+                      qty: 1,
+                      image: product.images![0],
+                      price: product.price,
+                    }}
+                  />
                 </div>
               )}
             </CardContent>
