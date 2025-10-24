@@ -19,6 +19,7 @@ const currency = z
     "Price must have exactly two decimal places"
   );
 
+// schema for inserting/creating products
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
@@ -32,6 +33,11 @@ export const insertProductSchema = z.object({
   // helper function needed for the price needs to have 2 decimal points ex: 49.99
   // then match the utility fn returned value against a regular expression
   price: currency,
+});
+
+// schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Id is required"),
 });
 
 // schema for siging users in
@@ -116,4 +122,23 @@ export const insertOrderItemSchema = z.object({
   name: z.string(),
   price: currency,
   qty: z.number(),
+});
+
+export const paymentResultSchema = z.object({
+  id: z.string(),
+  status: z.string(),
+  email_address: z.string(),
+  pricePaid: z.string(),
+});
+
+// Update Profile Schema
+export const updateProfileSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  email: z.string().min(3, "Email must be at least 3 characters"),
+});
+
+// Update User Schema
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "Id is required"),
+  role: z.string().min(1, "Role is required"),
 });
