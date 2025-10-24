@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Loader } from "lucide-react";
-import { updateUserAddress } from "@/lib/actions/user.acions";
+import { updateUserAddress } from "@/lib/actions/user.actions";
 
 const ShippingAddressForm = ({
   address,

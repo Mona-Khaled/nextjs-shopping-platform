@@ -18,11 +18,13 @@ const Menu = () => {
       {/* keep this nav hidden in small screens but on medium screens and up display it */}
       <nav className="hidden md:flex w-full max-w-xs gap-2">
         <ModeToggle />
+
         <Button asChild variant="ghost">
           <Link href="/cart">
             <ShoppingCart /> Cart
           </Link>
         </Button>
+
         <UserButton />
       </nav>
       {/* keep this nav hidden on medium screens and up, cause it is only for small screens .. so medium screens is the breakpoint here*/}
@@ -31,6 +33,7 @@ const Menu = () => {
           <SheetTrigger>
             <EllipsisVertical />
           </SheetTrigger>
+
           <SheetContent className="flex flex-col items-start">
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
@@ -38,11 +41,13 @@ const Menu = () => {
             </SheetHeader>
 
             <ModeToggle />
+
             <Button asChild variant="ghost">
               <Link href="/cart">
                 <ShoppingCart /> Cart
               </Link>
             </Button>
+
             <UserButton />
           </SheetContent>
         </Sheet>

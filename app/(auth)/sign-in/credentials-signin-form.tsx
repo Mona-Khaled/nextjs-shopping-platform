@@ -9,7 +9,7 @@ import { useActionState } from "react";
 // nice to have, adds to user experience, showing form status (loading, spinner on signin button, etc..)
 import { useFormStatus } from "react-dom";
 // server action
-import { signInWithCredentials } from "@/lib/actions/user.acions";
+import { signInWithCredentials } from "@/lib/actions/user.actions";
 // callbackUrl Redirect
 import { useSearchParams } from "next/navigation";
 

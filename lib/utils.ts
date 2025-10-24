@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import qs from "query-string";
 
 // cn function is used for dynamic classes, merging classnames together
 export function cn(...inputs: ClassValue[]) {
@@ -124,3 +125,32 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
+
+//  Format Numbers
+const NUMBER_FORMATTER = new Intl.NumberFormat("en-US");
+export function formatNumber(number: number) {
+  return NUMBER_FORMATTER.format(number);
+}
+
+// Form Pagination Links
+export function formUrlQuery({
+  params,
+  key,
+  value,
+}: {
+  params: string;
+  key: string;
+  value: string | null;
+}) {
+  const query = qs.parse(params);
+
+  query[key] = value;
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query,
+    },
+    { skipNull: true }
+  );
+}

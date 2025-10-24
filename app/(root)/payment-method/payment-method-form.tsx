@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
-import { updateUserPaymentMethod } from "@/lib/actions/user.acions";
+import { updateUserPaymentMethod } from "@/lib/actions/user.actions";
 import { DEFAULT_PAYMENT_METHOD, PAYMENT_METHODS } from "@/lib/constants";
 import { paymentMethodSchema } from "@/lib/validators";
 import { PaymentMethod } from "@/types";

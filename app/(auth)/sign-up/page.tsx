@@ -13,6 +13,7 @@ import {
 import { APP_NAME } from "@/lib/constants";
 import SignUpForm from "./sign-up-form";
 
+// SignUp page.tsx
 export const metadata: Metadata = {
   title: "Sign Up",
 };
