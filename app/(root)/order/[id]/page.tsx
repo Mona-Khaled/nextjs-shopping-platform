@@ -11,14 +11,15 @@ const OrderDetialsPage = async (props: { params: Promise<{ id: string }> }) => {
   const order = await getOrderById(id);
   if (!order) notFound();
   return (
-    <OrderDetailsTable
-      order={{
-        ...order,
-        shippingAddress: order.shippingAddress as ShippingAddress,
-      }}
-      paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
-      isAdmin={session?.user.role === "admin" || false}
-    />
+    <>order details table</>
+    // <OrderDetailsTable
+    //   order={{
+    //     ...order,
+    //     shippingAddress: order.shippingAddress as ShippingAddress,
+    //   }}
+    //   paypalClientId={process.env.PAYPAL_CLIENT_ID || "sb"}
+    //   isAdmin={session?.user.role === "admin" || false}
+    // />
   );
 };
 
