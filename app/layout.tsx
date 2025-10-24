@@ -22,6 +22,21 @@ export const metadata: Metadata = {
   },
   description: `${APP_DESCRIPTION}`,
   metadataBase: new URL(SERVER_URL),
+  // OPEN GRAPH TAGS - Social media previews
+  openGraph: {
+    title: "Prosotre",
+    description: "Best Shopping platform",
+    images: [
+      {
+        url: "/public/images/promo.jpg", // ← Auto becomes absolute!
+        width: 1200,
+        height: 630,
+        alt: "Prostore Preview",
+      },
+    ],
+    type: "website",
+    siteName: "My Tech Store",
+  },
 };
 
 export default function RootLayout({
