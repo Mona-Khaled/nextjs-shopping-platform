@@ -113,6 +113,7 @@ export async function updateUserAddress(data: ShippingAddress) {
     const session = await auth();
 
     const currentUser = await prisma.user.findFirst({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       where: { id: session?.user?.id },
     });
 
@@ -140,6 +141,7 @@ export async function updateUserPaymentMethod(data: PaymentMethod) {
     const session = await auth();
     const currentUser = await prisma.user.findFirst({
       where: {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
         id: session?.user?.id,
       },
     });
